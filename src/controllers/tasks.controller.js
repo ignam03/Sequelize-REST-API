@@ -42,6 +42,15 @@ export const updateTask = async (req, res) => {
         const { id } = req.params;
         const { name, done, projectId } = req.body;
 
+        //otra forma de update solo los campos especifificados
+        const taskUpd = await Task.findOne({
+            where: {
+                id,
+            }
+        })
+        taskUpd.set(req.body);
+        //await task.save();
+
         const task = await Task.findByPk(id);
         task.name = name;
         task.done = done;
