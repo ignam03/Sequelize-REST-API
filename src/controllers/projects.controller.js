@@ -1,4 +1,5 @@
 import { Project } from "../models/Project.js";
+import { Task } from "../models/Task.js"
 
 
 export const getProjects = async (req, res) => {
@@ -14,7 +15,7 @@ export const getProject = async (req, res) => {
     try {
         const { id } = req.params;
         const project = await Project.findByPk(id);
-        if (!project) return res.status(404).json({ message:"project not found"})
+        if (!project) return res.status(404).json({ message: "project not found" })
         res.json(project);
         //otra forma de buscar un solo elemento
         const project2 = await Project.findOne({
@@ -71,4 +72,15 @@ export const deleteProject = async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
+}
+
+export const getProjectTaks = async (req, res) => {
+    const { id } = req.params;
+    const tasks = await Task.findAll({
+        where:{
+            projectId: id
+        }
+    });
+
+    res.json(tasks)
 }
